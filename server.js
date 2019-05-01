@@ -1,11 +1,12 @@
 var express    = require('express');
-var app        = express();
 var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
 var database = require("./config/keys").mongoURI;
+const user = require('./routes/user');
+
+var app        = express();
 
 //api routes
-const user = require('./routes/user');
 
 
 
@@ -23,8 +24,8 @@ mongoose.connect(database,{ useNewUrlParser: true },(err)=>
 
 
 app.get('/',(req,res)=>{
-res.send("check");
-})
+res.send("check !!");
+});
 
 app.use("/user", user);
 
