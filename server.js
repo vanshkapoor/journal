@@ -3,6 +3,7 @@ var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
 var database = require("./config/keys").mongoURI;
 const user = require('./routes/user');
+const passport = require('passport');
 
 var app        = express();
 
@@ -21,6 +22,12 @@ mongoose.connect(database,{ useNewUrlParser: true },(err)=>
         console.log("connected to db");
     }
     });
+
+app.use(passport.initialize());
+//passport 
+require('./config/passport')(passport);
+
+
 
 
 app.get('/',(req,res)=>{
