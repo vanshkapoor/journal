@@ -4,7 +4,7 @@ const passport  = require('passport');
 const mongoose  = require('mongoose');
 
 const Post = require('../models/Post');
-
+const User = require('../models/User');
 
 router.get('/',(req,res)=>{
     res.send("post");
@@ -68,7 +68,50 @@ router.get('/all/react',(req,res)=>{
 });
 
 
+router.get('/:id',(req,res) =>{
+    Post.findById(req.params.id)
+    .then(post => res.json(post))
+    .catch(err => res.status(404).json({error: "no post"}))
+})
 
+
+//@route post/like/:id
+//@access private
+router.post('/like/:id',passport.authenticate('jwt',{ session:false }),(req,res)=>{
+    User.findOne({id:req.user.id}).then(user => { 
+        Post.findById(req.params.id)
+        .then(post =>{
+            if(post.likes.filter(like => like.user.toString() === req.user.id).length > 0){
+                return res.status(404).json({error:"user already liked"})
+            }
+            post.likes.push({user:req.user.id});
+            post.save(post).then(post => res.json(post));
+        })
+        .catch(err =>res.status(404).json({error:"no post found"}))
+    })
+})
+
+
+//@route post/unlike/:id
+//@access private
+router.post('/unlike/:id',passport.authenticate('jwt',{ session:false }),(req,res)=>{
+    User.findOne({id:req.user.id})
+    .then(user =>{
+        Post.findById(req.params.id)
+        .then(post => {
+            if(post.likes.filter(like => like.user.toString() === req.user.id).length === 0)
+            {
+                return res.status(404).json({error:"you have not liked it earlier"})
+            }
+            const removeIndex = post.likes.map(item => item.user.toString()).indexOf(req.user.id);
+
+            post.likes.splice(removeIndex,1);
+            post.save(post).then(post => res.json(post));
+
+        })
+        .catch(err =>res.status(404).json({error:"no post found"}))
+    })
+})
 
 
 
