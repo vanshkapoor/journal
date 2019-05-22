@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var database = require("./config/keys").mongoURI;
 const user = require('./routes/user');
 const post = require('./routes/post');
+const profile = require('./routes/profile');
+
 const passport = require('passport');
 
 var app        = express();
@@ -37,6 +39,7 @@ res.send("check !!");
 
 app.use("/user", user);
 app.use('/post', post);
+app.use('/profile',profile);
 
 
 

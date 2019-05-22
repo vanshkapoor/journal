@@ -24,6 +24,7 @@ router.post('/add',passport.authenticate('jwt',{ session:false }),(req,res) =>{
             user:req.user.id,
             title:req.body.title,
             topic:req.body.topic,
+            para:req.body.para,
             p1:req.body.p1,
             p2:req.body.p2,
             p3:req.body.p3,
@@ -35,7 +36,8 @@ router.post('/add',passport.authenticate('jwt',{ session:false }),(req,res) =>{
             c4:req.body.c4,
             c5:req.body.c5,
             link:req.body.link,
-            image:req.body.image
+            image:req.body.image,
+            time:req.body.time,
         }
         new Post(newpost).save().then(post => res.json(post));
     })
@@ -47,6 +49,7 @@ router.post('/add',passport.authenticate('jwt',{ session:false }),(req,res) =>{
 //@access public
 router.get('/all',(req,res)=>{
     Post.find()
+    .populate('user',['name'])
     .sort({date:-1})
     .then(posts =>{
         if(posts.length > 0){

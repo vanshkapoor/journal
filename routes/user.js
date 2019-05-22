@@ -75,6 +75,9 @@ router.get('/current',passport.authenticate('jwt',{ session:false }),(req,res) =
         res.json({usr : req.user});
 });
 
+//@route /user/all
+//access public
+//desc lists all users
 router.get('/all',(req,res)=>{
     User.find()
     .then(users => {

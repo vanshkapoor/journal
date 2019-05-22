@@ -11,10 +11,13 @@ const postschema = new Schema({
     },
     topic:{
         type:String,
+        default:"general"
     },
+    // opening para
     para:{
         type:String
     },
+    // rest paras
     p1:{
         type:String
     },
@@ -30,6 +33,9 @@ const postschema = new Schema({
     p5:{
         type:String
     },
+
+    // rest codes
+
     c1:{
         type:String
     },
@@ -62,6 +68,12 @@ const postschema = new Schema({
     date:{
         type:Date,
         default:Date.now
+    },
+    
+    // time required to read
+    time:{
+        type:String,
+        required:true
     }
 
 });
