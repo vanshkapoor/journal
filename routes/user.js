@@ -75,5 +75,16 @@ router.get('/current',passport.authenticate('jwt',{ session:false }),(req,res) =
         res.json({usr : req.user});
 });
 
+router.get('/all',(req,res)=>{
+    User.find()
+    .then(users => {
+        if(!users){
+            res.status(404).json({error:'no user'});
+        }
+        res.json(users);
+    })
+    .catch(err => res.status(400).json({error:'no users found'}));
+})
+
 
 module.exports = router;

@@ -67,6 +67,14 @@ router.get('/all/react',(req,res)=>{
     .catch(err => res.status(400).json({error:"no post at the moment"}));
 });
 
+//@route post/node
+//@desc gets blogs of particular topic 
+router.get('/all/node',(req,res)=>{
+    Post.find({topic:"node"})
+    .sort({date:-1})
+    .then(posts =>res.json(posts))
+    .catch(err => res.status(400).json({error:"no post at the moment"}));
+});
 
 router.get('/:id',(req,res) =>{
     Post.findById(req.params.id)
