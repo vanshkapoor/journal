@@ -4,6 +4,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const passport = require('passport');
+const nodemailer = require('nodemailer');
+var Transport = require('nodemailer-sendgrid-transport');
+
+var options = {
+    auth: {
+        api_key: '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'
+    }
+}
+
+const mailer = nodemailer.createTransport(Transport(options));
 
 //@route /user/
 router.get('/',(req,res)=>{
@@ -28,7 +38,17 @@ router.post('/register', (req,res)=>{
                         newuser.password = hash;
 
                         newuser.save().
-                        then(user => { res.json(user) })
+                        then(user => { 
+                            var email = {
+                                to: req.body.email,
+                                from: 'vanshkapoorvk7@gmail.com',
+                                subject: 'successfully signed up to Journal',
+                                html: '<h1>Hiii!!  Thankyou for registering to Journal</h1> <p> <br/> ~by <strong>Vansh</strong></p>'
+                            };                             
+                            mailer.sendMail(email);
+
+                            res.json(user);
+                         })
                         .catch(err =>{console.log(err)})
                     
                     })
